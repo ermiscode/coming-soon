@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>comingsoon</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            overflow: hidden;
+            height: 100vh;
+            background: #000;
+        }
+
+        /* Video Background */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            z-index: 0;
+        }
+
+        .video-background video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: contain;
+        }
+
+        /* Dark Overlay */
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+
+        /* Optional: Email signup 
+        .email-form {
+            margin-top: 40px;
+            animation: fadeInUp 1s ease 0.9s both;
+        }
+
+        .email-form input {
+            padding: 15px 25px;
+            font-size: 1rem;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            background: rgba(255, 255, 255, 0.1);
+            color: #fff;
+            border-radius: 50px;
+            width: 300px;
+            max-width: 90vw;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .email-form input::placeholder {
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .email-form input:focus {
+            outline: none;
+            border-color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        .email-form button {
+            padding: 15px 40px;
+            font-size: 1rem;
+            font-weight: 600;
+            border: none;
+            background: #fff;
+            color: #000;
+            border-radius: 50px;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .email-form button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
+        } 
+        
+        */
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading" id="loading">
+        <div class="loading-spinner"></div>
+    </div>
+
+    <!-- Video Background -->
+    <div class="video-background">
+        <video src="comingsoon_1.mp4" autoplay muted loop playsinline id="bgVideo">
+            <!-- REPLACE WITH YOUR CLOUDFLARE R2 URL 
+            <source src="https://YOUR-BUCKET.r2.cloudflarestorage.com/your-video.mp4" type="video/mp4">
+            Your browser does not support the video tag. -->
+        </video>
+    </div>
+
+    <!-- Dark Overlay -->
+    <div class="overlay"></div>
+
+    <!-- Content -->
+    <!-- <div class="content">
+        <h1>Coming Soon</h1>
+        <p>Something Amazing is on the Way</p> 
+    -->
+        <!-- Optional: Email Signup Form -->
+        <!--
+        <form class="email-form" onsubmit="handleSubmit(event)">
+            <input type="email" placeholder="Enter your email" required>
+            <button type="submit">Notify Me</button>
+        </form>
+        
+    </div> -->
+
+    <!-- <script>
+        const video = document.getElementById('bgVideo');
+        const loading = document.getElementById('loading');
+
+        // Hide loading screen when video is ready
+        video.addEventListener('canplay', function() {
+            setTimeout(() => {
+                loading.classList.add('hidden');
+            }, 500);
+        });
+
+        // Fallback: Hide loading after 3 seconds
+        setTimeout(() => {
+            loading.classList.add('hidden');
+        }, 3000);
+
+        // Ensure video plays (especially on mobile)
+        video.addEventListener('loadeddata', function() {
+            video.play().catch(error => {
+                console.log('Autoplay prevented:', error);
+            });
+        });
+
+        // Optional: Email form handler
+        function handleSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input').value;
+            alert('Thanks! We will notify you at: ' + email);
+            event.target.reset();
+        }
+    </script> -->
+</body>
+</html>
