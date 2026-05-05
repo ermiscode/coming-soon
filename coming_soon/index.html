@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>comingsoon</title>
+    <title>Coming Soon</title>
     <style>
         * {
             margin: 0;
@@ -20,7 +20,7 @@
 
         /* Video Background */
         .video-background {
-            position: relative;
+            position: fixed;
             top: 0;
             left: 0;
             width: 100%;
@@ -29,8 +29,18 @@
             z-index: 0;
         }
 
-
         .video-background video {
+            /*position: absolute;
+            top: 50%;
+            left: 50%;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            transform: translate(-50%, -50%);
+            object-fit: cover;
+            */
+            position: fixed;
             width: 100%;
             height: 100%;
             padding-right: 14px;
@@ -48,8 +58,39 @@
             z-index: 1;
         }
 
+        /* Content */
+        .content {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+        }
 
-        /* Optional: Email signup 
+        .content h1 {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            letter-spacing: -0.02em;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+            animation: fadeInUp 1s ease 0.3s both;
+        }
+
+        .content p {
+            font-size: clamp(1rem, 3vw, 2rem);
+            font-weight: 300;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
+            animation: fadeInUp 1s ease 0.6s both;
+        }
+
+        /* Optional: Email signup */
         .email-form {
             margin-top: 40px;
             animation: fadeInUp 1s ease 0.9s both;
@@ -94,9 +135,7 @@
         .email-form button:hover {
             transform: scale(1.05);
             box-shadow: 0 10px 30px rgba(255, 255, 255, 0.3);
-        } 
-        
-        */
+        }
 
         /* Animations */
         @keyframes fadeInUp {
@@ -110,6 +149,56 @@
             }
         }
 
+        /* Mobile Styles */
+        @media (max-width: 768px) {
+            .email-form input {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+
+            .email-form button {
+                width: 100%;
+                margin-left: 0;
+            }
+
+            .email-form {
+                width: 100%;
+                max-width: 400px;
+            }
+        }
+
+        /* Loading State */
+        .loading {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
     </style>
 </head>
 <body>
@@ -120,10 +209,10 @@
 
     <!-- Video Background -->
     <div class="video-background">
-        <video src="comingsoon_1.mp4" autoplay muted loop playsinline id="bgVideo">
-            <!-- REPLACE WITH YOUR CLOUDFLARE R2 URL 
-            <source src="https://YOUR-BUCKET.r2.cloudflarestorage.com/your-video.mp4" type="video/mp4">
-            Your browser does not support the video tag. -->
+        <video autoplay muted loop playsinline id="bgVideo">
+            <!-- REPLACE WITH YOUR CLOUDFLARE R2 URL -->
+            <source src="comingsoon_1.mp4" type="video/mp4">
+            Your browser does not support the video tag.
         </video>
     </div>
 
@@ -131,20 +220,18 @@
     <div class="overlay"></div>
 
     <!-- Content -->
-    <!-- <div class="content">
-        <h1>Coming Soon</h1>
-        <p>Something Amazing is on the Way</p> 
-    -->
+    <div class="content">
+
         <!-- Optional: Email Signup Form -->
-        <!--
+        
         <form class="email-form" onsubmit="handleSubmit(event)">
             <input type="email" placeholder="Enter your email" required>
-            <button type="submit">Notify Me</button>
+            <button type="submit">Early Access + BTS</button>
         </form>
-        
-    </div> -->
+    
+    </div>
 
-    <!-- <script>
+    <script>
         const video = document.getElementById('bgVideo');
         const loading = document.getElementById('loading');
 
@@ -167,13 +254,46 @@
             });
         });
 
-        // Optional: Email form handler
-        function handleSubmit(event) {
+        async function handleSubmit(event) {
             event.preventDefault();
             const email = event.target.querySelector('input').value;
+            const button = event.target.querySelector('button');
+            
+            button.textContent = 'Sending...';
+            button.disabled = true;
+            
+            try {
+                await fetch('https://formspree.io/f/xbdwygyw', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: email }),
+                });
+                
+                alert('Thanks! We will notify you.');
+                event.target.reset();
+            } catch (error) {
+                alert('Error! Please try again.');
+            } finally {
+                button.textContent = 'Early Acces + BTS';
+                button.disabled = false;
+            }
+}
+
+        // Optional: Email form handler
+        /*function handleSubmit(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input').value;
+
+        // Send to Formspree
+            await fetch('', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email: email }),
+            });
+
             alert('Thanks! We will notify you at: ' + email);
             event.target.reset();
-        }
-    </script> -->
+        } */
+    </script>
 </body>
 </html>
