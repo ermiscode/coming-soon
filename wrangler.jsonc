@@ -1,0 +1,14 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "coming-soon",
+  "compatibility_date": "2026-05-07",
+  "observability": {
+    "enabled": true
+  },
+  "assets": {
+    "directory": "coming_soon"
+  },
+  "compatibility_flags": [
+    "nodejs_compat"
+  ]
+}
